@@ -3,21 +3,14 @@ import 'package:petscompanytest/Models/user_model.dart';
 
 class Message {
   final String sender;
-  final String time;
-  final String
-      date; // Would usually be type DateTime or Firebase Timestamp in production apps
-  final String objet;
-  final String type;
+  final String date;
   final String text;
   final bool readen;
   final int msgType;
   Color colorContainer;
   Message({
     this.sender,
-    this.time,
     this.date,
-    this.objet,
-    this.type,
     this.text,
     this.readen,
     this.msgType,
@@ -25,28 +18,23 @@ class Message {
 }
 
 //Current User
-final User currentUser = User(id: 0, name: 'Hamza', isFounder: false);
-
-
-
+final User currentUser = User(id: 0, name: 'Hamza');
 
 List<Message> chats = [
-      Message(
+  Message(
     sender: 'John',
     date: '',
     text: "Hey comment tu vas ?",
     readen: false,
     msgType: 0,
   ),
-    Message(
+  Message(
     sender: 'Hamza',
     date: '',
     text: "très bien juste je m'ennui  et toi?",
     readen: false,
     msgType: 0,
   ),
-
-
   Message(
     sender: 'John',
     date: '5:33 PM',
@@ -54,15 +42,11 @@ List<Message> chats = [
     readen: false,
     msgType: 0,
   ),
-   Message(
+  Message(
     sender: 'Hamza',
     date: '',
     text: "oui jaimerais bien t'accompagner",
     readen: false,
     msgType: 0,
   ),
-
 ];
-
-
-

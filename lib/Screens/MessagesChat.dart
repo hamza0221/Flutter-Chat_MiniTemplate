@@ -1,13 +1,9 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:petscompanytest/Constants/color_constant.dart';
 import 'package:petscompanytest/Models/message_model.dart';
 import 'package:petscompanytest/Models/user_model.dart';
 
@@ -16,7 +12,6 @@ class MessagesChat extends StatefulWidget {
 
   final Message message;
 
-
   MessagesChat({this.message});
 
   @override
@@ -24,129 +19,118 @@ class MessagesChat extends StatefulWidget {
 }
 
 class _MessagesChatState extends State<MessagesChat> {
-  User currentUser = User(id: 0, name: 'Hamza', isFounder: false);
-    final myController = TextEditingController();
-      File imageFile;
+  User currentUser = User(id: 0, name: 'Hamza');
+  final myController = TextEditingController();
+  File imageFile;
 
-
-
-  //bool connect=false;
-  bool visibleTime = true;
   var screenWidth, screenHeight;
 
-   _imgFromCamera() async {
-  File image = await ImagePicker.pickImage(
-    source: ImageSource.camera, imageQuality: 50
-  );
+  _imgFromCamera() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
 
-  setState(() {
-    imageFile = image;
-    chats.add(new Message(
-                  sender: 'Hamza',
-                  date: '',
-                  text: myController.text,
-                  readen: false,
-                  msgType: 1,
-                )
-          );
+    setState(() {
+      imageFile = image;
+      chats.add(new Message(
+        sender: 'Hamza',
+        date: '',
+        text: myController.text,
+        readen: false,
+        msgType: 1,
+      ));
+    });
+  }
 
-  });
-}
+  _imgFromGallery() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
 
-_imgFromGallery() async {
-  File image = await  ImagePicker.pickImage(
-      source: ImageSource.gallery, imageQuality: 50
-  );
+    setState(() {
+      imageFile = image;
+      chats.add(new Message(
+        sender: 'Hamza',
+        date: '',
+        text: myController.text,
+        readen: false,
+        msgType: 1,
+      ));
+    });
+  }
 
-  setState(() {
-    imageFile = image;
-     chats.add(new Message(
-                  sender: 'Hamza',
-                  date: '',
-                  text: myController.text,
-                  readen: false,
-                  msgType: 1,
-                )
-          );
-  });
-}
   void _showPicker(context) {
-  showModalBottomSheet(
-      context: context,
-      builder: (BuildContext bc) {
-        return SafeArea(
-          child: Container(
-            child: new Wrap(
-              children: <Widget>[
-                new ListTile(
-                    leading: new Icon(Icons.photo_library),
-                    title: new Text('Photo Library'),
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
                     onTap: () {
-                      _imgFromGallery();
+                      _imgFromCamera();
                       Navigator.of(context).pop();
-                    }),
-                new ListTile(
-                  leading: new Icon(Icons.photo_camera),
-                  title: new Text('Camera'),
-                  onTap: () {
-                    _imgFromCamera();
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      }
-    );
-}
+          );
+        });
+  }
 
   getMessageContainer(Message message, bool isMe) {
-    //texte
     if (message.msgType == 0) {
-    return Container(
-      decoration: isMe
-          ? BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.0),
-                topRight: Radius.circular(12.0),
-                bottomLeft: Radius.circular(12.0),
+      return Container(
+        decoration: isMe
+            ? BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12.0),
+                  topRight: Radius.circular(12.0),
+                  bottomLeft: Radius.circular(12.0),
+                ),
+                gradient: LinearGradient(
+                  begin: Alignment(-0.19, -0.27),
+                  end: Alignment(1.66, 2.66),
+                  colors: [HexColor("#689fee"), HexColor("#c737c2")],
+                  stops: [0.0, 1.0],
+                ),
+              )
+            : BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(14.0),
+                  topRight: Radius.circular(14.0),
+                  bottomRight: Radius.circular(14.0),
+                ),
+                //white please
+                color: const Color(0xffebebeb),
               ),
-              gradient: LinearGradient(
-                begin: Alignment(-0.19, -0.27),
-                end: Alignment(1.66, 2.66),
-                colors: [HexColor("#689fee"), HexColor("#c737c2")],
-                stops: [0.0, 1.0],
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message.text,
+              style: TextStyle(
+                fontFamily: 'SF Pro Text',
+                fontSize: 14,
+                color: isMe ? const Color(0xffffffff) : const Color(0xff231f20),
+                letterSpacing: 0.14,
               ),
-            )
-          : BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(14.0),
-                topRight: Radius.circular(14.0),
-                bottomRight: Radius.circular(14.0),
-              ),
-              //white please
-              color: const Color(0xffebebeb),
+              textAlign: TextAlign.left,
             ),
-      padding: EdgeInsets.all(10),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            message.text,
-            style: TextStyle(
-              fontFamily: 'SF Pro Text',
-              fontSize: 14,
-              color: isMe ? const Color(0xffffffff) : const Color(0xff231f20),
-              letterSpacing: 0.14,
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ],
-      ),
-    );
-    }
-    else if (message.msgType == 1) {
+          ],
+        ),
+      );
+    } else if (message.msgType == 1) {
       //image
       return Container(
         width: 230.0 * screenWidth,
@@ -178,8 +162,7 @@ _imgFromGallery() async {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   image: DecorationImage(
-                      image: new FileImage(imageFile),
-
+                    image: new FileImage(imageFile),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -202,10 +185,10 @@ _imgFromGallery() async {
           ),
         ),
       );
-  }}
+    }
+  }
 
   _buildMessage(Message message, bool isMe) {
-    
     return Container(
       padding: EdgeInsets.all(8.0),
       child: Align(
@@ -226,7 +209,7 @@ _imgFromGallery() async {
             iconSize: 30,
             color: HexColor("#dc21b8"),
             onPressed: () {
-             _showPicker(context);
+              _showPicker(context);
             },
           ),
           Expanded(
@@ -252,7 +235,6 @@ _imgFromGallery() async {
           SizedBox(
             width: 5 * screenWidth,
           ),
-        
           IconButton(
             icon: Icon(
               Icons.send,
@@ -271,7 +253,6 @@ _imgFromGallery() async {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
