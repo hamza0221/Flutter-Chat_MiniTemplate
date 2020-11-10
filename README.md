@@ -7,4 +7,4 @@ You can sent text or images from your photo gallery and/or from a camera shot ph
 
 # ScreenShot
 
-![Alt text](/ChatappMiniTemplate/blob/master/SCREENSHOT.jpg?raw=true "Optional Title")
+![Alt text](/SCREENSHOT.jpg?raw=true "Optional Title")
